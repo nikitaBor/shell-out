@@ -20,14 +20,21 @@ void get_and_execute() {
   fgets(line, sizeof(line), stdin);
   char ** args = parse_args(line);
 
+  int i = 0;
+  while(args[++i]){}//i-1 is the index of the last argument
+
   int child = fork();
   if(!child){ //child
+    if(*args[i-1] == '&')
+      args[i-1] = NULL;
     execvp(args[0], args);
     return;
   }
   else{
-    int *status;
-    wait(status);
-    execlp("./shell_out", "next_run", NULL); //reruns itself but with new args
+    if(*args[i-1] != '&'){
+      int *status;
+      wait(status);
+    }
+    execlp("./shell_out", "next_run", NULL); //reruns itself
   }
 }
