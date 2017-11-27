@@ -32,7 +32,7 @@ void get_and_execute() {
 
     //returns if commands are exit/cd (parent responsible)
     if(!strcmp(args[0],"exit") || !strcmp(args[0], "cd"))
-      return;
+      exit(0);
 
     execvp(args[0], args);
     return;
@@ -50,8 +50,10 @@ void get_and_execute() {
       exit(0);
     }
     if(!strcmp(args[0],"cd")){
+      printf("changind dir to %s\n", args[0]);
       chdir(args[1]);
     }
+    return;
     //execlp("./shell_out", "next_run", NULL); //reruns itself
   }
 }
