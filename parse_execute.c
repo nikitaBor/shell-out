@@ -50,7 +50,6 @@ void get_and_execute() {
       exit(0);
     }
     if(!strcmp(args[0],"cd")){
-      printf("changind dir to %s\n", args[0]);
       chdir(args[1]);
     }
     return;
