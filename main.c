@@ -14,8 +14,10 @@
 
 int main(char * args[]){
     char cwd[1024]; //current working directory
-    getcwd(cwd,sizeof(cwd));
-    printf(GRN "cwd:" CYN "~%s" RESET "$", cwd);
-    get_and_execute();
+    while(1){
+        getcwd(cwd,sizeof(cwd));
+        printf(GRN "cwd:" CYN "~%s" RESET "$", cwd);
+        get_and_execute();
+    }
     return 0;
 }
