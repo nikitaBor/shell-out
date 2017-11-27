@@ -52,6 +52,6 @@ void get_and_execute() {
     if(!strcmp(args[0],"cd")){
       chdir(args[1]);
     }
-    execlp("./shell_out", "next_run", NULL); //reruns itself
+    //execlp("./shell_out", "next_run", NULL); //reruns itself
   }
 }
