@@ -44,34 +44,36 @@ void get_and_execute() {
   int i = 0;
   while(args[++i]){}//i-1 is the index of the last argument
 
-  int child = fork();
-  if(!child){
-    //CHILD PROCESS
-    //takes & token out for execution
-    if(!strcmp(args[i-1], "&"))
-      args[i-1] = NULL;
+  int child;
+  while ((semi_line = strsep(&line, ";")) != NULL) {
+    child = fork();
+    if(!child){
+      //CHILD PROCESS
+      //takes & token out for execution
+      if(!strcmp(args[i-1], "&"))
+	args[i-1] = NULL;
 
-    //returns if commands are exit/cd (parent responsible)
-    if(!strcmp(args[0],"exit") || !strcmp(args[0], "cd"))
-      exit(0);
+      //returns if commands are exit/cd (parent responsible)
+      if(!strcmp(args[0],"exit") || !strcmp(args[0], "cd"))
+	exit(0);
 
-    execvp(args[0], args);
-    return;
-  }
-  else{
-    //PARENT PROCESS
-    //waits for child to finish if & token is absent
-    if(strcmp(args[i-1], "&")){
-      int *status;
-      wait(status);
+      execvp(args[0], args);
     }
+    else{
+      //PARENT PROCESS
+      //waits for child to finish if & token is absent
+      if(strcmp(args[i-1], "&")){
+	int *status;
+	wait(status);
+      }
 
-    //addresses exit/cd commands
-    if(!strcmp(args[0],"exit")){
-      exit(0);
-    }
-    if(!strcmp(args[0],"cd")){
-      chdir(args[1]);
+      //addresses exit/cd commands
+      if(!strcmp(args[0],"exit")){
+	exit(0);
+      }
+      if(!strcmp(args[0],"cd")){
+	chdir(args[1]);
+      }
     }
     return;
     //execlp("./shell_out", "next_run", NULL); //reruns itself
