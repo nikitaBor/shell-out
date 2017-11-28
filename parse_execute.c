@@ -16,10 +16,31 @@ char ** parse_args( char * line ) {
 }
 
 void get_and_execute() {
-  char line[256];
-  fgets(line, sizeof(line), stdin);
-  char ** args = parse_args(line);
+  char *line;
+  line = (char *) malloc(256 * sizeof(char));
+  fgets(line, 256, stdin);
+  /*printf("fgot\n");
+  
+  //checking for semicolons
+  char *semi_line;
+  semi_line = (char *) malloc(256 * sizeof(char));
+  int forker;
+  while ((semi_line = strsep(&line, ";")) != NULL) {
+    printf("forked\n");
+    forker = fork();
+    if (!forker) {
+      break;
+    }
+  }
+  
+  printf("semi_line: %s\n", semi_line);
+  if (!semi_line[0])
+    return;
+  */
+  char ** args = parse_args(/*semi_*/line);
+  //printf("parsed\n");
 
+  
   int i = 0;
   while(args[++i]){}//i-1 is the index of the last argument
 
