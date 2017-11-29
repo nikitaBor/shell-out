@@ -1,1 +1,1 @@
-void redirect_left(int fdSource, int fdTarget);
+void redirect_left(const char* source, const char* target);
