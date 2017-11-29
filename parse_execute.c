@@ -37,30 +37,16 @@ void get_and_execute() {
   //checking for semicolons
   char *semi_line;
   semi_line = (char *) malloc(256 * sizeof(char));
-  /*
-  int forker;
-  while ((semi_line = strsep(&line, ";")) != NULL) {
-    printf("forked\n");
-    forker = fork();
-    if (!forker) {
-      break;
-    }
-  }
-  
-  printf("semi_line: %s\n", semi_line);
-  if (!semi_line[0])
-    return;
-  */
   char ** args;
   int child;
+	
   while ((semi_line = strsep(&line, ";")) != NULL) {
     args = parse_args(semi_line);
-
-    child = fork();
 
     int i = 0;
     while(args[++i]){}//i-1 is the index of the last argument
 
+    child = fork();	  
     ////////////////////////child
     if(!child){
       //CHILD PROCESS
@@ -68,13 +54,13 @@ void get_and_execute() {
       if(!strcmp(args[i-1], "&"))
 	args[i-1] = NULL;
 
-      //returns if commands are exit/cd/> (parent responsible)
+      //exits if commands are exit/cd (parent responsible)
       if(!strcmp(args[0],"exit") || !strcmp(args[0], "cd"))
 	exit(0);
-      //relies on short circuiting in case of no argument
+      //redirects left
       else if((i ==3) && !strcmp(args[1], ">"))
         redirect_left(args[0],args[2]);
-      //if child is responsible for program than execute it
+      //if regular program than execute it
       execvp(args[0], args);
       exit(0);
     }
@@ -89,17 +75,10 @@ void get_and_execute() {
       }
 
       //addresses exit/cd/> commands
-      if(!strcmp(args[0],"exit")){
+      if(!strcmp(args[0],"exit"))
 	exit(0);
-      }
-      if(!strcmp(args[0],"cd")){
-	chdir(args[1]);
-      }
-      //i == 3 means there are three things in args
-      //      if((i == 3) && !strcmp(args[1],">")){ 
-      // redirect_left(args[0],args[2]);
-      //}
-      
+      if(!strcmp(args[0],"cd"))
+	chdir(args[1]);      
     }
   }
   return;
