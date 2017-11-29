@@ -8,10 +8,13 @@ char ** parse_args( char * line ) {
   printf("beginning parse\n");
   char ** a = (char **)calloc(25, sizeof(char[256]));
   int index = 0;
+  char * newline = strchr(line, '\n');
+  if (newline)
+    *newline = 0;
   printf("parsing\n");
   while (line) {
     printf("index %d\n", index);
-    a[index] = strsep(&line, " \n;");
+    a[index] = strsep(&line, " ;");
     printf("a[%d]: %s\n", index, a[index]);
     index++;
     printf("finished index %d\n", index);
