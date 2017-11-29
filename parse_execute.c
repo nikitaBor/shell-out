@@ -11,6 +11,8 @@ char ** parse_args( char * line ) {
   char * newline = strchr(line, '\n');
   if (newline)
     *newline = 0;
+  //  while (!strcmp(line[0]," "))
+  //line++;
   printf("parsing\n");
   while (line) {
     printf("index %d\n", index);
@@ -33,9 +35,8 @@ void get_and_execute() {
   //printf("fgot\n");
   
   //checking for semicolons
-  char semi_line[256];
-  char *semi_line_placeholder;
-  semi_line_placeholder = (char *) malloc(256 * sizeof(char));
+  char *semi_line;
+  semi_line = (char *) malloc(256 * sizeof(char));
   /*
   int forker;
   while ((semi_line = strsep(&line, ";")) != NULL) {
@@ -56,8 +57,7 @@ void get_and_execute() {
   
 
   int child;
-  while ((semi_line_placeholder = strsep(&line, ";")) != NULL) {
-    strcpy(semi_line, semi_line_placeholder);
+  while ((semi_line = strsep(&line, ";")) != NULL) {
     printf("semi_line: %s\n", semi_line);
     args = parse_args(semi_line);
     printf("args parsed\n");
@@ -101,7 +101,8 @@ void get_and_execute() {
 	chdir(args[1]);
       }
     }
-    return;
     //execlp("./shell_out", "next_run", NULL); //reruns itself
   }
+  return;
+
 }
