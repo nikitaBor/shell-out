@@ -1,0 +1,1 @@
+void redirect_left(int fdSource, int fdTarget);
