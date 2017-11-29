@@ -48,14 +48,23 @@ void get_and_execute() {
 
   //checking for semicolons
   char *semi_line;
+  char *left_line;
   semi_line = (char *) malloc(256 * sizeof(char));
   char ** args;
+  char ** left_args; //arguments left of >
+  int redirectCond = 0; //1 for >, -1 for <, 0 for no >/<
+  int i; //will be used as counter for number of arguments
   int child;
 	
-  while ((semi_line = strsep(&line, ";")) != NULL) {
+  while ((semi_line = strsep(&line, ";")) != NULL){
+    if(strchr(semi_line, ">") >= 0){
+        left_line = strsep(&semi_line, "");
+        left_args = parse_args(left_line);
+        redirectCond = 1; 
+    }
     args = parse_args(semi_line);
 
-    int i = 0;
+    i = 0;
     while(args[++i]){}//i-1 is the index of the last argument
 
     child = fork();	  
@@ -64,14 +73,15 @@ void get_and_execute() {
       //CHILD PROCESS
       //takes & token out for execution
       if(!strcmp(args[i-1], "&"))
-	args[i-1] = NULL;
+	    args[i-1] = NULL;
 
       //exits if commands are exit/cd (parent responsible)
       if(!strcmp(args[0],"exit") || !strcmp(args[0], "cd"))
-	exit(0);
-      //redirects left
-      else if((i ==3) && !strcmp(args[1], ">"))
-        redirect_left(args[0],args[2]);
+	    exit(0);
+      //redirects left if args contained a >
+      if(redirectCond == 1){  
+        redirect_left(left_args,args);
+      }
       //if regular program than execute it
       execvp(args[0], args);
       exit(0);
