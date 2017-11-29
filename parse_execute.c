@@ -5,13 +5,21 @@
 #include <sys/wait.h>
 
 char ** parse_args( char * line ) {
+  printf("beginning parse\n");
   char ** a = (char **)calloc(25, sizeof(char[256]));
   int index = 0;
-  while (*line) {
-    a[index] = strsep(&line, " \n");
+  printf("parsing\n");
+  while (line) {
+    printf("index %d\n", index);
+    a[index] = strsep(&line, " \n;");
+    printf("a[%d]: %s\n", index, a[index]);
     index++;
+    printf("finished index %d\n", index);
+    printf("line: %s\n", line);
   }
+  printf("done parsing\n");
   a[index] = NULL;
+  printf("returning a\n");
   return a;
 }
 
@@ -19,11 +27,13 @@ void get_and_execute() {
   char *line;
   line = (char *) malloc(256 * sizeof(char));
   fgets(line, 256, stdin);
-  /*printf("fgot\n");
+  //printf("fgot\n");
   
   //checking for semicolons
-  char *semi_line;
-  semi_line = (char *) malloc(256 * sizeof(char));
+  char semi_line[256];
+  char *semi_line_placeholder;
+  semi_line_placeholder = (char *) malloc(256 * sizeof(char));
+  /*
   int forker;
   while ((semi_line = strsep(&line, ";")) != NULL) {
     printf("forked\n");
@@ -37,19 +47,31 @@ void get_and_execute() {
   if (!semi_line[0])
     return;
   */
-  char ** args = parse_args(/*semi_*/line);
+  char ** args/* = parse_args(line)*/;
   //printf("parsed\n");
 
   
-  int i = 0;
-  while(args[++i]){}//i-1 is the index of the last argument
 
   int child;
-  while ((semi_line = strsep(&line, ";")) != NULL) {
+  while ((semi_line_placeholder = strsep(&line, ";")) != NULL) {
+    strcpy(semi_line, semi_line_placeholder);
+    printf("semi_line: %s\n", semi_line);
+    args = parse_args(semi_line);
+    printf("args parsed\n");
+    printf("args[0]: %s\n", args[0]);
+    printf("args[1]: %s\n", args[1]);
+
     child = fork();
+    printf("forked\n");
+
+    int i = 0;
+    while(args[++i]){}//i-1 is the index of the last argument
+    
     if(!child){
       //CHILD PROCESS
       //takes & token out for execution
+      printf("child\n");
+
       if(!strcmp(args[i-1], "&"))
 	args[i-1] = NULL;
 
@@ -62,6 +84,7 @@ void get_and_execute() {
     else{
       //PARENT PROCESS
       //waits for child to finish if & token is absent
+      printf("parent\n");
       if(strcmp(args[i-1], "&")){
 	int *status;
 	wait(status);
