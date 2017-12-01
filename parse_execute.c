@@ -18,8 +18,6 @@ char ** parse_args(char *line){
   char *newline = strchr(line, '\n');
   if (newline)
     *newline = 0;
-  while (line[0] == ' ')
-    line++;
   int end_index = strlen(line) - 1;
   while (line[end_index] == ' ') {
     line[end_index] = 0;
@@ -27,6 +25,8 @@ char ** parse_args(char *line){
   }
 
   while (line) {
+    while (line[0] == ' ')
+    line++;
     a[index] = strsep(&line, " ;");
     if (!strchr(a[index], ' ')) {
       index++;
