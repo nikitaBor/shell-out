@@ -54,7 +54,7 @@ void get_and_execute() {
   //    semi_line = (char *) malloc(256 * sizeof(char));
   char **args;
   char **left_args; //arguments left of >/<
-  int redirectCond = 0; //1 for >, -1 for <, 0 for no >/<
+  int redirectCond = 0; //1 for >, -1 for <, 2 for |, 0 for no >/</|
   int i; //will be used as counter for number of arguments
   int child;
 
@@ -68,6 +68,11 @@ void get_and_execute() {
       left_line = strsep(&semi_line, "<");
       left_args = parse_args(left_line);
       redirectCond = -1;
+    }
+    else if(strchr(semi_line, '|') != NULL) {
+        left_line = strsep(&semi_line, "|");
+        left_args = parse_args(left_line);
+        redirectCond = 2;
     }
     args = parse_args(semi_line);
 
@@ -83,7 +88,7 @@ void get_and_execute() {
       if (!strcmp(args[i - 1], "&"))
 	args[i - 1] = NULL;
 
-      //exits if commands are exit/cd/>/< (parent responsible)
+      //exits if commands are exit/cd/>/</| (parent responsible)
       if (!strcmp(args[0], "exit") || !strcmp(args[0], "cd") || redirectCond)
 	exit(0);
       //if regular program than execute it
@@ -99,12 +104,15 @@ void get_and_execute() {
 	wait(&status);
       }
 
-      //addresses exit/cd/>/< commands
+      //addresses exit/cd/>/</| commands
       if (redirectCond == 1){
 	redirect_left(left_args,args);
       }
       else if(redirectCond == -1){
 	redirect_right(left_args, args);
+      }
+      else if(redirectCond == 2){
+          redirect_pipe(left_args, args);
       }
       else if (!strcmp(args[0], "exit"))
 	exit(0);

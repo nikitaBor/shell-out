@@ -58,4 +58,8 @@ void redirect_right(char **target, char **source){
     return;
 }
 
+void redirect_pipe(char **source, char** target){
+    
+}
+
 
