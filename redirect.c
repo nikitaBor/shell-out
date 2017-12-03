@@ -20,6 +20,7 @@ int openFileForRead(char *sourceName){
     return fd;
 }
 
+//>
 void redirect_left(char **source, char **target) {
     int fd = openFileForWrite(target[0]);
     if(fd == -1)
@@ -39,6 +40,7 @@ void redirect_left(char **source, char **target) {
     return;
 }
 
+//<
 void redirect_right(char **target, char **source){
     int fd = openFileForRead(source[0]);
     if(fd == -1)
@@ -59,7 +61,12 @@ void redirect_right(char **target, char **source){
 }
 
 void redirect_pipe(char **source, char** target){
-    
+    char** dummy = calloc(1, sizeof(char[256]));
+    dummy[0] = "dummyFileForRedirectPipe.txt";
+    redirect_left(source,dummy);
+    redirect_right(target, dummy);
+    free(dummy);
+    return;
 }
 
 

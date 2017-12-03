@@ -89,8 +89,9 @@ void get_and_execute() {
 	args[i - 1] = NULL;
 
       //exits if commands are exit/cd/>/</| (parent responsible)
-      if (!strcmp(args[0], "exit") || !strcmp(args[0], "cd") || redirectCond)
-	exit(0);
+      if (!strcmp(args[0], "exit") || !strcmp(args[0], "cd") || redirectCond) {
+          exit(0);
+      }
       //if regular program than execute it
       execvp(args[0], args);
       exit(0);
@@ -119,7 +120,6 @@ void get_and_execute() {
       else if (!strcmp(args[0], "cd"))
 	chdir(args[1]);
     }
-
   }
   return;
 }

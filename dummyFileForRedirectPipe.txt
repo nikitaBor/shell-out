@@ -1,0 +1,14 @@
+cmake-build-debug
+CMakeLists.txt
+dummyFileForRedirectPipe.txt
+main.c
+main.o
+makefile
+parse_execute.c
+parse_execute.h
+parse_execute.o
+README.md
+redirect.c
+redirect.h
+redirect.o
+shell_out
