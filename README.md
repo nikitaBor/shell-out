@@ -1,9 +1,4 @@
 # shell-out
-
-
-A description of what features your shell implements
-
-
 Features:
 	Forks and executes commands, through all whitespace.
 	Parses multiple commands on one line.
