@@ -1,12 +1,18 @@
 # shell-out
 Features:
-	Forks and executes commands, through all whitespace.
-	Parses multiple commands on one line.
+	Forks and executes commands, through all whitespace(between command words and ;).
+	Parses multiple commands on one line(seperated by ;).
 	Redirects using >, <.
+	Handles |.
 
 Attempted:
+	Being able to handle '&' token (partially works but with bug)
 
 Bugs:
+	If a program is called with the '&' token, shell-out will continue running fine with this program in the background
+	  until the program is closed. After the program in the background stops running, shell-out will no longer wait 
+	  for any commands to finish running (asking for further user input before other programs ran)
+	
 
 Files & Function Headers:
 main.c
