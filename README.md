@@ -72,3 +72,10 @@ redirect.c
     
     Uses the source file for stdin when executing the target commands
     ====================*/
+    
+    /*======== void redirect_pipe() ==========
+    Inputs: char **source, char **target
+    Returns: void
+
+    Runs the source and uses its output as the input when running target
+    ====================*/
