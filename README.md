@@ -9,9 +9,11 @@ Attempted:
 	Being able to handle '&' token (partially works but with bug)
 
 Bugs:
-	If a program is called with the '&' token, shell-out will continue running fine with this program in the background
+	*If a program is called with the '&' token, shell-out will continue running fine with this program in the background
 	  until the program is closed. After the program in the background stops running, shell-out will no longer wait 
 	  for any commands to finish running (asking for further user input before other programs ran)
+	* Has problems with executing some | commands (cat | ls will execute both cat and ls) particularly when the right
+	   arguments do not take in input(like ls).
 	
 
 Files & Function Headers:
